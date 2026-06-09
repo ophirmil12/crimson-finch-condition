@@ -1,0 +1,7 @@
+raw_data/
+results/
+__pycache__/
+*.pyc
+.claude/
+Paper.pdf
+note.md
