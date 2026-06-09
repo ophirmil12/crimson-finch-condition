@@ -77,6 +77,7 @@ Final_Project/
 ├── 05_year_analysis/05_year_analysis.py
 ├── 06_ml/06_ml.py
 ├── 07_sex_interaction/07_sex_interaction.py
+├── 08_dimred_clustering/08_dimred_clustering.py
 ├── figures/                           # All PNG outputs
 └── results/                           # All CSV tables
 ```
@@ -324,6 +325,36 @@ effect size — a null result here does not rule out sex-differentiated conditio
 
 ---
 
+### Step 08 — Dimensionality Reduction & Clustering
+
+The five condition indices were standardised and embedded via three methods to visualise the structure of the condition space.
+
+**Embeddings:** PCA (linear), t-SNE (perplexity=30), UMAP (n_neighbors=15, min_dist=0.1).
+
+**Key findings:**
+
+| Figure | What it shows |
+|--------|---------------|
+| `08a_projections_outcome.png` | All three projections coloured by reproductive output (viridis). Spearman rs with outcome annotated per panel. |
+| `08b_projections_sex_stage.png` | 2×3 grid — projections × Sex / Breeding stage. Stage separates clearly in UMAP/t-SNE; sex shows substantial overlap. |
+| `08c_clustering.png` | K-means silhouette analysis (k=2–6), UMAP with best-k clusters, cluster condition profiles, outcome by cluster. |
+| `08d_projections_year.png` | Projections coloured by breeding season with centroid diamonds showing year-to-year drift in condition space. |
+
+**Clustering results (K-means, k=2–6):**
+
+Silhouette scores are uniformly low (~0.20–0.22) at all values of k. The best solution (k=2) gives:
+
+| Cluster | n | Mean output | Success rate |
+|---------|---|-------------|-------------|
+| C1 | 104 | 1.25 | 51% |
+| C2 | 78 | 1.72 | 60% |
+
+Kruskal-Wallis test across clusters: H = 3.09, p = 0.079 (marginal).
+
+**Interpretation:** The low silhouette scores across all k indicate that the condition space is a **continuous gradient**, not a discrete cluster structure. This geometrically validates the paper's linear Poisson modelling approach and argues against threshold-based ("good/poor condition") categorisations. UMAP and t-SNE both capture the energy-reserve gradient as the dominant axis of variation, consistent with all prior steps.
+
+---
+
 ## Overall Summary
 
 | Question | Answer |
@@ -343,7 +374,7 @@ These results closely replicate the paper's core findings: energy-reserve indice
 ## Dependencies
 
 ```
-pandas, numpy, matplotlib, statsmodels, scikit-learn, scipy
+pandas, numpy, matplotlib, statsmodels, scikit-learn, scipy, umap-learn
 ```
 
-Install: `py -m pip install pandas numpy matplotlib statsmodels scikit-learn scipy`
+Install: `py -m pip install pandas numpy matplotlib statsmodels scikit-learn scipy umap-learn`
